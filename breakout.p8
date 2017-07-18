@@ -21,7 +21,7 @@ function startgame()
 	pad_h=2
 	pad_c=5
 	
-	lives=1
+	lives=2
 	score=0
 	serveball()
 end
@@ -312,8 +312,11 @@ function draw_start()
 end
 
 function draw_gameover()
-	print("gameover",30,0,5)
-	print("press z to start over",30,30,10)
+	rectfill(0,45,128,68,0)
+	print("gameover",
+							30,50,6)
+	print("pr5ss z to start over",
+							30,60,10)
 end
 
 function _draw()
@@ -346,24 +349,9 @@ function stearpaddle()
 	end
 	
 	-- do not let paddle go of screen
-	
-	move_paddle=true
-	if pad_dx < 0 
-				and pad_x <= 0 then
-		--moving left
-		--paddle cant go further left
-		move_paddle=false
-	elseif pad_dx > 0 
-								and pad_x > 128-pad_w 
-								then
-		--moving right
-		--paddle cant go further right
-			move_paddle=false
-	end 
-	
-	if move_paddle then
 		pad_x+=pad_dx
-	end
+		pad_x=mid(0,pad_x,127-pad_w)
+		
 
 end
 __gfx__
