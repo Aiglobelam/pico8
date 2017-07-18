@@ -21,6 +21,11 @@ function startgame()
 	pad_h=2
 	pad_c=5
 	
+	brick_x=5
+	brick_y=20
+	brick_w=10
+	brick_h=4
+	
 	lives=2
 	score=0
 	serveball()
@@ -295,6 +300,11 @@ function draw_game()
 										pad_x+pad_w,
 										pad_y+pad_h,pad_c)
 										
+	rectfill(brick_x,
+										brick_y,
+										brick_x+brick_w,
+										brick_y+brick_h,14)
+										
 	rectfill(0,0,128,7,0)
 	print("lives:"..lives,100,0,7)
 	
@@ -352,7 +362,6 @@ function stearpaddle()
 		pad_x+=pad_dx
 		pad_x=mid(0,pad_x,127-pad_w)
 		
-
 end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
