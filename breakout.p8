@@ -21,15 +21,27 @@ function startgame()
 	pad_h=2
 	pad_c=5
 	
-	brick_x=5
-	brick_y=20
-	brick_w=100
+	brick_w=10
 	brick_h=4
-	brick_v=true
+	buildbricks()
 	
 	lives=2
 	score=0
 	serveball()
+end
+
+function buildbricks()
+	local i
+	brick_x={}
+	brick_y={}
+	brick_v={}
+	for i=1, 10 do
+		add(brick_x,
+						5+(i-1)*(brick_w+2))
+		add(brick_y,20)
+		add(brick_v, true)
+	end
+	
 end
 
 function serveball()
@@ -121,25 +133,24 @@ function update_game()
 			--ball_dy =- ball_dy --change ball direction
 	end
 	
-	-- ball collide brick check
-	if brick_v and 
-				ball_collide_rect(next_x,
-																						next_y,
-																						brick_x,
-																						brick_y,
-																						brick_w,
-																						brick_h) 
+	for i=1,#brick_x do
+		-- ball collide brick check
+		if brick_v[i] and 
+					ball_collide_rect(next_x,
+																							next_y,
+																							brick_x[i],
+																							brick_y[i],
+																							brick_w,
+																							brick_h) 
 		then
 			--deal with collision
 			pad_c = 10 --change color paddle
 			
 			--fund out in wich dir to deflect
-			if deflx_ballbox(ball_x,
-																				ball_y,
-																				ball_dx,
-																				ball_dy,
-																				brick_x,
-																				brick_y,
+			if deflx_ballbox(ball_x,ball_y,
+																				ball_dx,ball_dy,
+																				brick_x[i],
+																				brick_y[i],
 																				brick_w,
 																				brick_h) 
 			then
@@ -148,9 +159,10 @@ function update_game()
 				ball_dy = -ball_dy
 			end
 			sfx(3)
-			brick_v=false
+			brick_v[i]=false
 			score+=10
-	end
+		end
+	end	
 	
 	ball_x=next_x
 	ball_y=next_y
@@ -331,17 +343,22 @@ function draw_game()
 										pad_y,
 										pad_x+pad_w,
 										pad_y+pad_h,pad_c)
-	-- draw bricks
-	if brick_v then									
-	rectfill(brick_x,
-										brick_y,
-										brick_x+brick_w,
-										brick_y+brick_h,14)
-	end									
-	rectfill(0,0,128,7,0)
-	print("lives:"..lives,100,0,7)
 	
-	print("score:"..score,100,10,7)
+	local i									
+	-- draw bricks
+	for i=1, #brick_x do
+		if brick_v[i] then									
+			rectfill(brick_x[i],
+												brick_y[i],
+												brick_x[i]+brick_w,
+												brick_y[i]+brick_h,14)
+		end
+	end
+	
+									
+	rectfill(0,0,128,7,0)
+	print("lives:"..lives,80,0,7)
+	print("score:"..score,80,10,7)
 										
 	--printcords()
 	
