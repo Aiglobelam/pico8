@@ -1,6 +1,7 @@
 pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
+
 function _init()	
 	cls()
 	mode="start"
@@ -37,7 +38,7 @@ function buildbricks()
 	brick_v={}
 	
 	--brick_x={5,16,27,38,49,60,71,82,93,104,115,126}
-	for i=1, 66 do
+	for i=1, 71 do
 		add(brick_x,
 						4+((i-1))%11*(brick_w+2))
 		add(brick_y,20+flr((i-1)/12)*(brick_h+2))
@@ -83,7 +84,7 @@ function update_game()
  
  stearpaddle()
  
- local next_x, next_y
+ local next_x, next_y, brickhit
  
  next_x=ball_x+ball_dx
  next_y=ball_y+ball_dy
@@ -128,15 +129,28 @@ function update_game()
 																				pad_h) 
 			then
 					ball_dx = -ball_dx
+					if ball_x < pad_x+pad_w/2 then
+						next_x=pad_x+pad_w+ball_r
+					else
+						next_x=pad_x+pad_w+ball_r
+					end
 			else
-				ball_dy = -ball_dy
+					ball_dy = -ball_dy
+					if ball_y > pad_y then
+						next_y=pad_y+pad_h+ball_r
+					else
+						next_y=pad_y-ball_r
+					end
 			end
 			
 			--ball_dy =- ball_dy --change ball direction
 	end
 	
+	brickhit=false
 	for i=1,#brick_x do
+		-- check if ball hit brick
 		-- ball collide brick check
+		
 		if brick_v[i] and 
 					ball_collide_rect(next_x,
 																							next_y,
@@ -147,19 +161,21 @@ function update_game()
 		then
 			--deal with collision
 			pad_c = 10 --change color paddle
-			
-			--fund out in wich dir to deflect
-			if deflx_ballbox(ball_x,ball_y,
-																				ball_dx,ball_dy,
-																				brick_x[i],
-																				brick_y[i],
-																				brick_w,
-																				brick_h) 
-			then
-					ball_dx = -ball_dx
-			else
-				ball_dy = -ball_dy
+			if not brickhit then
+				--fund out in wich dir to deflect
+				if deflx_ballbox(ball_x,ball_y,
+																					ball_dx,ball_dy,
+																					brick_x[i],
+																					brick_y[i],
+																					brick_w,
+																					brick_h) 
+				then
+						ball_dx = -ball_dx
+				else
+					ball_dy = -ball_dy
+				end
 			end
+			brickhit=true
 			sfx(3)
 			brick_v[i]=false
 			score+=10
