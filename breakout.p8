@@ -21,7 +21,7 @@ function startgame()
 	pad_h=2
 	pad_c=5
 	
-	brick_w=10
+	brick_w=9
 	brick_h=4
 	buildbricks()
 	
@@ -35,18 +35,20 @@ function buildbricks()
 	brick_x={}
 	brick_y={}
 	brick_v={}
-	for i=1, 10 do
+	
+	--brick_x={5,16,27,38,49,60,71,82,93,104,115,126}
+	for i=1, 66 do
 		add(brick_x,
-						5+(i-1)*(brick_w+2))
-		add(brick_y,20)
+						4+((i-1))%11*(brick_w+2))
+		add(brick_y,20+flr((i-1)/12)*(brick_h+2))
 		add(brick_v, true)
 	end
 	
 end
 
 function serveball()
-	ball_x=5
-	ball_y=33
+	ball_x=10
+	ball_y=60
 	ball_dx=1 --speed x
 	ball_dy=1 --speed y
 end
