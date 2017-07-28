@@ -1,7 +1,53 @@
 pico-8 cartridge // http://www.pico-8.com
 version 8
 __lua__
+function _init()
+	x = 64
+	y = 64
+	frame = 0
+	si_jump_start=16
+	si_jump_end=28
+	psi=16
+end
 
+-- called once per update, 30fps
+function _update()
+	 frame+=1
+	 
+	 if frame==61 
+	 then
+	 	frame=1
+	 end
+	 
+	 if (btn(0) and x > 0) 
+	 	then x -= 1 end
+  if (btn(1) and x < 127) 
+  	then x += 1 end
+  if (btn(2) and y > 0) 
+  	then y -= 1 end
+  if (btn(3) and y < 127) 
+  	then y += 1 end
+	
+	psi+=1
+	if psi == si_jump_end+1 then
+		psi=si_jump_start
+	end	
+end
+
+function anim(framespeed,
+														fs,
+														x)
+ local curframe = 0
+ local counter = 0
+
+end
+-- called once per visible frame
+function _draw()
+  cls()
+  spr(psi,x,y)
+  print(frame)
+  print(psi)
+end
 __gfx__
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
