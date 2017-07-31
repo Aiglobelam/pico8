@@ -59,6 +59,7 @@ function actor_move()
   if btnp(4) 
   			and not actor.isjumping 
   	then
+  	sfx(1)
    actor.isjumping=true
   end
   if btnp(5) then
